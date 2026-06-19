@@ -1,0 +1,37 @@
+name: Run Update Protocol on New Source
+
+on:
+  push:
+    paths:
+      - 'raw_sources/**'
+    branches:
+      - main
+
+jobs:
+  update_protocol:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r automation/requirements.txt
+
+      - name: Run update protocol
+        run: python automation/run_update_protocol.py
+
+      - name: Generate changelog entry
+        run: python automation/generate_changelog_entry.py
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto: update protocol run after new source [skip ci]"

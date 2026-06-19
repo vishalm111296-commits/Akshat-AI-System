@@ -1,0 +1,43 @@
+name: Weekly Content Fetch
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Every Monday at 6 AM UTC
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  fetch_and_update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r automation/requirements.txt
+
+      - name: Fetch YouTube transcripts
+        run: python automation/fetch_youtube_transcripts.py
+
+      - name: Run update protocol
+        run: python automation/run_update_protocol.py
+
+      - name: Generate changelog entry
+        run: python automation/generate_changelog_entry.py
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto: weekly content fetch [skip ci]"
+          commit_user_name: "akshat-ai-automation"
+          commit_user_email: "automation@akshat-ai-system.local"

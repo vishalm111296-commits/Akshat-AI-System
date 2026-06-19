@@ -1,0 +1,4 @@
+youtube-transcript-api==0.6.2
+feedparser==6.0.10
+PyYAML==6.0.1
+requests==2.31.0

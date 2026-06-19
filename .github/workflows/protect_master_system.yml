@@ -1,0 +1,31 @@
+name: Protect Master System
+
+on:
+  pull_request:
+    paths:
+      - 'knowledge/01_Akshat_Master_System.md'
+
+jobs:
+  require_human_review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block automated modification
+        run: |
+          echo "❌ BLOCKED: knowledge/01_Akshat_Master_System.md cannot be modified by automation."
+          echo "This file requires:"
+          echo "  1. Manual execution of scripts/promote_to_master.py"
+          echo "  2. Evidence log showing 8+ independent sources"
+          echo "  3. Human review and approval"
+          echo "  4. Manual merge only"
+          exit 1
+        if: github.actor == 'akshat-ai-automation' || github.actor == 'github-actions[bot]'
+
+      - name: Notify human reviewer
+        if: github.actor != 'akshat-ai-automation'
+        run: |
+          echo "⚠️  NOTICE: Master System modification detected."
+          echo "Please verify this change has met the promotion threshold:"
+          echo "  - 8+ independent sources"
+          echo "  - 2+ distinct time periods"
+          echo "  - Evidence log reviewed"
+          echo "Proceeding to human review..."
