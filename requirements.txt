@@ -1,7 +1,7 @@
-# Root requirements — mirrors automation/requirements.txt
-# Single source of truth: keep these in sync.
-# For dev/test: pip install -r requirements.txt
+# Root requirements — single source of truth for development + CI
+# Keep in sync with automation/requirements.txt
 youtube-transcript-api>=0.6.0
 feedparser>=6.0.0
 pyyaml>=6.0
+requests>=2.31.0
 pytest>=7.0

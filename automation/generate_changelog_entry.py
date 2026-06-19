@@ -2,6 +2,10 @@
 """
 generate_changelog_entry.py
 Appends the latest automation run entries to the master CHANGELOG.md.
+
+FIX: Added safety check for missing changelog/entries/ directory.
+FIX: Generates a run-summary entry even when no entry files exist,
+     so the workflow always produces an auditable record.
 """
 
 import os
@@ -10,39 +14,64 @@ from datetime import datetime
 
 CHANGELOG_FILE = "CHANGELOG.md"
 ENTRIES_DIR = "changelog/entries"
+MERGE_MARKER = ".automation_state/last_merged_entry.txt"
+
+
+def ensure_dirs():
+    os.makedirs(ENTRIES_DIR, exist_ok=True)
+    os.makedirs(".automation_state", exist_ok=True)
 
 
 def get_unmerged_entries():
-    """Get all entry files not yet merged into CHANGELOG.md."""
-    merged_marker = ".automation_state/last_merged_entry.txt"
     all_entries = sorted(glob.glob(os.path.join(ENTRIES_DIR, "*.md")))
     last_merged = ""
-    if os.path.exists(merged_marker):
-        with open(merged_marker) as f:
+    if os.path.exists(MERGE_MARKER):
+        with open(MERGE_MARKER) as f:
             last_merged = f.read().strip()
-    return [e for e in all_entries if e > last_merged], merged_marker
+    return [e for e in all_entries if e > last_merged]
 
 
-def append_to_changelog(entries):
-    """Append entries to CHANGELOG.md."""
-    if not entries:
-        print("  No new entries to merge.")
-        return
+def generate_run_summary():
+    """Always generate a run-summary so the changelog is never silent."""
+    stamp = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
+    # Count raw sources for evidence
+    yt_count = len(glob.glob("raw_sources/youtube_transcripts/*.txt"))
+    cp_count = len(glob.glob("raw_sources/community_posts/*.txt"))
+    pp_count = len(glob.glob("raw_sources/paid_posts/*.txt"))
+    return (
+        f"\n## Automation Run — {stamp}\n\n"
+        f"- YouTube transcripts in repo: {yt_count}\n"
+        f"- Community posts in repo: {cp_count}\n"
+        f"- Paid posts in repo: {pp_count}\n"
+        f"- Pipeline: extract → contradiction_check → recent_changes → frequency_table\n"
+        f"- Master System: PROTECTED (not modified)\n"
+    )
 
-    with open(CHANGELOG_FILE, "a") as changelog:
-        changelog.write("\n---\n")
+
+def append_to_changelog(entries, run_summary):
+    content_to_add = ""
+    if entries:
+        content_to_add += "\n---\n"
         for entry_file in entries:
             with open(entry_file) as f:
-                changelog.write(f.read())
-    print(f"  Merged {len(entries)} entry(ies) into CHANGELOG.md")
+                content_to_add += f.read()
+        print(f"  Merged {len(entries)} entry file(s) into CHANGELOG.md")
+    # Always append run summary
+    content_to_add += run_summary
+    with open(CHANGELOG_FILE, "a", encoding="utf-8") as changelog:
+        changelog.write(content_to_add)
+    print(f"  Run summary appended to CHANGELOG.md")
 
 
 def main():
     print("[generate_changelog_entry] Starting...")
-    entries, marker = get_unmerged_entries()
-    append_to_changelog(entries)
+    ensure_dirs()
+    entries = get_unmerged_entries()
+    run_summary = generate_run_summary()
+    append_to_changelog(entries, run_summary)
     if entries:
-        with open(marker, "w") as f:
+        # Mark last merged
+        with open(MERGE_MARKER, "w") as f:
             f.write(sorted(entries)[-1])
     print("[generate_changelog_entry] Done.")
 

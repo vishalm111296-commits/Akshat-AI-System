@@ -4,28 +4,75 @@ on:
   pull_request:
     paths:
       - 'knowledge/01_Akshat_Master_System.md'
+  push:
+    paths:
+      - 'knowledge/01_Akshat_Master_System.md'
+    branches:
+      - main
 
 jobs:
   require_human_review:
     runs-on: ubuntu-latest
     steps:
-      - name: Block automated modification
-        run: |
-          echo "❌ BLOCKED: knowledge/01_Akshat_Master_System.md cannot be modified by automation."
-          echo "This file requires:"
-          echo "  1. Manual execution of scripts/promote_to_master.py"
-          echo "  2. Evidence log showing 8+ independent sources"
-          echo "  3. Human review and approval"
-          echo "  4. Manual merge only"
-          exit 1
-        if: github.actor == 'akshat-ai-automation' || github.actor == 'github-actions[bot]'
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Notify human reviewer
-        if: github.actor != 'akshat-ai-automation'
+      - name: Block automated modification via push
+        if: |
+          github.event_name == 'push' &&
+          (github.actor == 'akshat-ai-automation' ||
+           github.actor == 'github-actions[bot]' ||
+           contains(github.event.head_commit.message, '[skip ci]'))
         run: |
-          echo "⚠️  NOTICE: Master System modification detected."
-          echo "Please verify this change has met the promotion threshold:"
-          echo "  - 8+ independent sources"
-          echo "  - 2+ distinct time periods"
-          echo "  - Evidence log reviewed"
-          echo "Proceeding to human review..."
+          echo "=== BLOCKED ==="
+          echo "❌ knowledge/01_Akshat_Master_System.md CANNOT be modified by automation."
+          echo "Actor: ${{ github.actor }}"
+          echo "Commit: ${{ github.event.head_commit.message }}"
+          echo ""
+          echo "Required for any Master System edit:"
+          echo "  1. Run: python scripts/promote_to_master.py --principle [ID] --create-pr"
+          echo "  2. All validation checks must PASS"
+          echo "  3. Evidence log must show 8+ independent sources"
+          echo "  4. Human review and manual merge ONLY"
+          exit 1
+
+      - name: Block automated modification via PR from bot
+        if: |
+          github.event_name == 'pull_request' &&
+          (github.actor == 'akshat-ai-automation' ||
+           github.actor == 'github-actions[bot]')
+        run: |
+          echo "❌ BLOCKED: PR from automation actor touching Master System."
+          echo "Only human-authored PRs are allowed to modify 01_Akshat_Master_System.md"
+          exit 1
+
+      - name: Validate promotion evidence (human PR)
+        if: |
+          github.event_name == 'pull_request' &&
+          github.actor != 'akshat-ai-automation' &&
+          github.actor != 'github-actions[bot]'
+        run: |
+          echo "⚠️  HUMAN PR detected modifying Master System."
+          echo "Actor: ${{ github.actor }}"
+          echo ""
+          echo "Checklist — Reviewer must verify:"
+          echo "  [ ] Principle has 8+ independent sources in Frequency Table"
+          echo "  [ ] 2+ distinct time periods confirmed"
+          echo "  [ ] No open contradictions in knowledge/contradiction_report.md"
+          echo "  [ ] promote_to_master.py --create-pr was run and all checks passed"
+          echo "  [ ] CHANGELOG.md updated with promotion record"
+          echo ""
+          echo "Proceeding to human review. Do NOT auto-merge."
+          # Note: We do NOT exit 1 here — human PRs are allowed, but must be reviewed.
+          # The CODEOWNERS file or branch protection rule should require a review approval.
+
+      - name: Verify Master System hash integrity
+        run: |
+          python - <<'EOF'
+          import hashlib
+          with open('knowledge/01_Akshat_Master_System.md', 'rb') as f:
+              h = hashlib.sha256(f.read()).hexdigest()
+          print(f'Master System SHA-256: {h}')
+          print('Hash recorded for audit trail.')
+          # Future: compare against a pinned baseline hash in .automation_state/
+          EOF

@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets — NEVER commit
+*.env
+.secrets
+secrets.yaml
+
+# Test artifacts — pycache in tests should never be committed
+tests/__pycache__/
+
+# Automation state (DO commit — these track pipeline state)
+# .automation_state/ is intentionally tracked
+# Exception: temp files
+*.tmp
+
+# Changelog entries are tracked
+# changelog/entries/*.md are intentionally tracked
