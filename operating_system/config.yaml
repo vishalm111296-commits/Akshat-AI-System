@@ -1,0 +1,44 @@
+# Akshat-AI-System Global Configuration
+# L0 — Operating System
+
+repository:
+  name: Akshat-AI-System
+  version: "1.0.0"
+  built: "2026-06-19"
+  maintainer: "vishalm111296-commits"
+
+paths:
+  knowledge: "knowledge/"
+  raw_sources: "raw_sources/"
+  skills: "skills/"
+  automation: "automation/"
+  changelog: "changelog/"
+  tests: "tests/"
+
+knowledge_files:
+  master_system: "knowledge/01_Akshat_Master_System.md"
+  frequency_table: "knowledge/02_Akshat_Principle_Frequency_Table.md"
+  source_database: "knowledge/03_Akshat_Source_Database.md"
+  recent_changes: "knowledge/04_Akshat_Recent_Changes.md"
+  knowledge_router: "knowledge/05_Akshat_Knowledge_Router.md"
+  skill_router: "knowledge/06_Skill_Router.md"
+  workflow_skills: "knowledge/07_Akshat_Workflow_Skills.md"
+  update_protocol: "knowledge/08_Akshat_Update_Protocol.md"
+
+update_engine:
+  promotion_threshold: 3          # Min independent sources to promote to Master
+  recent_changes_ttl_days: 90     # Days before a Recent Change entry needs review
+  auto_modify_master: false       # MUST always be false
+  hash_algorithm: "sha256"
+
+source_types:
+  video: "V"
+  public_post: "PC"
+  paid_post: "PP"
+  pdf: "D"
+  external: "E"
+
+automation:
+  youtube_channel_id: "UCqW8jxh4tH1Z1sWPbkGWL4g"
+  fetch_schedule: "0 6 * * 1"     # Every Monday 6am UTC
+  max_transcript_age_days: 7
