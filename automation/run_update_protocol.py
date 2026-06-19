@@ -1,53 +1,79 @@
 #!/usr/bin/env python3
 """
-Improved update protocol.
-Updates Recent Changes and Frequency Table placeholders when new sources arrive.
-Never edits Master System.
+run_update_protocol.py — FULL PIPELINE ORCHESTRATOR
+
+Pipeline (in order):
+  Step 1: extract_principles.py      — detect new sources, extract principle keywords
+  Step 2: contradiction_checker.py   — flag contradictions before any write
+  Step 3: update_recent_changes.py   — append structured entries (APPROVED only)
+  Step 4: update_frequency_table.py  — increment counts (APPROVED only)
+
+Safety rules:
+  - If any step raises an exception, pipeline halts and reports which step failed
+  - Master System (01_Akshat_Master_System.md) is NEVER touched by this script
+  - All writes in steps 3 and 4 use atomic (tmp + rename) patterns
 """
-import os, json, hashlib
+import subprocess, sys, os
 from datetime import datetime
 
-STATE_FILE='.automation_state/processed_sources.json'
-RAW='raw_sources'
-FREQ='knowledge/02_Akshat_Principle_Frequency_Table.md'
-RECENT='knowledge/04_Akshat_Recent_Changes.md'
+STEPS = [
+    ("extract_principles",       "automation/extract_principles.py"),
+    ("contradiction_checker",    "automation/contradiction_checker.py"),
+    ("update_recent_changes",    "automation/update_recent_changes.py"),
+    ("update_frequency_table",   "automation/update_frequency_table.py"),
+]
 
-os.makedirs('.automation_state', exist_ok=True)
+MASTER = "knowledge/01_Akshat_Master_System.md"
 
-def load_state():
-    return json.load(open(STATE_FILE)) if os.path.exists(STATE_FILE) else {}
+def master_hash():
+    import hashlib
+    with open(MASTER, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
 
-def save_state(s):
-    json.dump(s, open(STATE_FILE,'w'), indent=2)
+def save_master_hash(h):
+    os.makedirs(".automation_state", exist_ok=True)
+    import json
+    state_file = ".automation_state/master_hash.json"
+    json.dump({"hash": h, "recorded_at": datetime.now().isoformat()}, open(state_file, "w"), indent=2)
 
-def file_hash(p):
-    return hashlib.md5(open(p,'rb').read()).hexdigest()
+def verify_master_untouched(pre_hash):
+    post_hash = master_hash()
+    if pre_hash != post_hash:
+        print("\n🚨 CRITICAL VIOLATION: Master System hash changed during pipeline run!")
+        print(f"  Expected: {pre_hash}")
+        print(f"  Got:      {post_hash}")
+        print("  Halting. Investigate immediately.")
+        sys.exit(99)
 
-def source_files():
-    out=[]
-    for r,_,fs in os.walk(RAW):
-        for f in fs:
-            if not f.startswith('.'):
-                out.append(os.path.join(r,f))
-    return out
+def run_step(name, script_path):
+    print(f"\n[pipeline] ▶ Step: {name}")
+    if not os.path.exists(script_path):
+        print(f"[pipeline] ⚠️  Script not found: {script_path} — skipping.")
+        return
+    result = subprocess.run([sys.executable, script_path], capture_output=False)
+    if result.returncode != 0:
+        print(f"[pipeline] ❌ Step '{name}' failed with exit code {result.returncode}. Pipeline halted.")
+        sys.exit(result.returncode)
+    print(f"[pipeline] ✅ Step '{name}' completed.")
 
-def append_line(path,line):
-    if os.path.exists(path):
-        with open(path,'a',encoding='utf-8') as f:
-            f.write('\n'+line)
+def main():
+    print(f"[pipeline] ========================================")
+    print(f"[pipeline] Akshat-AI-System Update Protocol")
+    print(f"[pipeline] Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"[pipeline] ========================================")
 
-state=load_state()
-new=[]
-for f in source_files():
-    h=file_hash(f)
-    if h not in state:
-        new.append(f)
-        state[h]={'file':f,'processed':datetime.now().isoformat()}
+    pre_hash = master_hash()
+    save_master_hash(pre_hash)
+    print(f"[pipeline] Master System hash recorded: {pre_hash[:16]}...")
 
-if new:
-    stamp=datetime.now().strftime('%Y-%m-%d')
-    append_line(RECENT,f'- {stamp}: {len(new)} new source(s) detected by automation')
-    append_line(FREQ,f'| AUTO-{stamp} | Pending Human Classification | {len(new)} |')
+    for name, script in STEPS:
+        run_step(name, script)
+        verify_master_untouched(pre_hash)
 
-save_state(state)
-print(f'Processed {len(new)} new files. Master System protected.')
+    print(f"\n[pipeline] ========================================")
+    print(f"[pipeline] ✅ All steps complete. Master System intact.")
+    print(f"[pipeline] Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"[pipeline] ========================================")
+
+if __name__ == "__main__":
+    main()

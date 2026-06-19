@@ -26,11 +26,38 @@ jobs:
       - name: Install dependencies
         run: pip install -r automation/requirements.txt
 
+      - name: Record Master System hash (pre-run)
+        run: |
+          python -c "
+          import hashlib, json, os
+          os.makedirs('.automation_state', exist_ok=True)
+          h = hashlib.sha256(open('knowledge/01_Akshat_Master_System.md','rb').read()).hexdigest()
+          json.dump({'hash': h}, open('.automation_state/master_hash.json','w'))
+          print(f'Master hash recorded: {h[:16]}...')
+          "
+
       - name: Fetch YouTube transcripts
         run: python automation/fetch_youtube_transcripts.py
 
-      - name: Run update protocol
+      - name: Run full update pipeline
         run: python automation/run_update_protocol.py
+
+      - name: Verify Master System untouched (post-run)
+        run: |
+          python -c "
+          import hashlib, json, sys
+          stored = json.load(open('.automation_state/master_hash.json'))['hash']
+          current = hashlib.sha256(open('knowledge/01_Akshat_Master_System.md','rb').read()).hexdigest()
+          if stored != current:
+              print('CRITICAL: Master System hash changed during automation!')
+              sys.exit(99)
+          print('Master System integrity verified.')
+          "
+
+      - name: Run pytest integrity checks
+        run: |
+          pip install pytest pyyaml
+          pytest tests/test_pipeline_integrity.py -v --tb=short
 
       - name: Generate changelog entry
         run: python automation/generate_changelog_entry.py
