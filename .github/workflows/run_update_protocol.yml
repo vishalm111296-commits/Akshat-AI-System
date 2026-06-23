@@ -32,6 +32,7 @@ jobs:
           pip install pytest pyyaml
 
       - name: Record Master System hash BEFORE run
+        id: pre_hash
         run: |
           python - <<'EOF'
           import hashlib, json, os
@@ -39,7 +40,8 @@ jobs:
           with open('knowledge/01_Akshat_Master_System.md', 'rb') as f:
               h = hashlib.sha256(f.read()).hexdigest()
           with open('.automation_state/master_hash.json', 'w') as out:
-              json.dump({'hash': h, 'recorded_at': __import__('datetime').datetime.utcnow().isoformat()}, out, indent=2)
+              import datetime
+              json.dump({'hash': h, 'recorded_at': datetime.datetime.utcnow().isoformat()}, out, indent=2)
           print(f'Pre-run Master hash: {h[:16]}...')
           EOF
 
@@ -70,6 +72,7 @@ jobs:
         run: |
           echo '=== Files changed this run ==='
           git status --short
+          echo '=== End of changed files ==='
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
