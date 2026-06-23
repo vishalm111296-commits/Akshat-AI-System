@@ -4,12 +4,8 @@ fetch_youtube_transcripts.py
 Detects new Akshat Shrivastava YouTube videos via RSS and downloads transcripts.
 No paid API required. Uses youtube-transcript-api + feedparser.
 
-VERIFIED REAL IMPLEMENTATION:
-- Reads channel RSS from config.yaml (no hardcoded IDs)
-- Deduplicates by video_id in seen_videos.json
-- Saves transcript as individual timestamped .txt file in raw_sources/youtube_transcripts/
-- Marks videos with no transcript as 'no_transcript' (does NOT crash)
-- Returns list of fetched filenames for pipeline consumption
+NOTE: If transcript fetching fails (YouTube bot protection, no transcript available),
+the script exits with code 0 (non-fatal) so the CI pipeline continues.
 """
 
 import os
@@ -22,9 +18,9 @@ try:
     import feedparser
 except ImportError:
     print("[fetch] ERROR: Missing dependencies. Run: pip install -r automation/requirements.txt")
-    sys.exit(1)
+    sys.exit(0)  # Non-fatal: pipeline continues without transcript fetch
 
-# Read channel ID from config to eliminate hardcode/config mismatch
+
 def get_channel_id():
     try:
         import yaml
@@ -35,7 +31,8 @@ def get_channel_id():
         return cfg["automation"]["youtube_channel_id"]
     except Exception as e:
         print(f"[fetch] WARNING: Could not read config.yaml ({e}). Using fallback channel ID.")
-        return "UCfU6El0eOFtDMwq24BoMpxQ"  # Akshat Shrivastava — fallback only
+        return "UCfU6El0eOFtDMwq24BoMpxQ"  # Akshat Shrivastava -- fallback only
+
 
 CHANNEL_ID = get_channel_id()
 CHANNEL_RSS = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
@@ -69,10 +66,11 @@ def get_new_videos(seen):
     try:
         feed = feedparser.parse(CHANNEL_RSS)
     except Exception as e:
-        print(f"[fetch] ERROR: Could not fetch RSS feed: {e}")
+        print(f"[fetch] WARNING: Could not fetch RSS feed: {e}. Skipping.")
         return []
     if not feed.entries:
         print("[fetch] WARNING: RSS feed returned 0 entries. Channel may be private or RSS unavailable.")
+        return []
     new = [
         entry for entry in feed.entries
         if entry.get("yt_videoid") and entry["yt_videoid"] not in seen
@@ -83,12 +81,12 @@ def get_new_videos(seen):
 
 def fetch_transcript(video_id):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en', 'en-IN', 'hi'])
         return " ".join(t["text"] for t in transcript)
     except (TranscriptsDisabled, NoTranscriptFound):
         return None
     except Exception as e:
-        print(f"[fetch] WARNING: Unexpected error for {video_id}: {e}")
+        print(f"[fetch] WARNING: Could not fetch transcript for {video_id}: {e}")
         return None
 
 
@@ -102,7 +100,6 @@ def save_transcript(video, text):
     )[:40].strip("-")
     filename = f"YT-{pub_date}-{title_slug}-{vid_id}.txt"
     filepath = os.path.join(TRANSCRIPTS_DIR, filename)
-    # Atomic write
     tmp = filepath + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(f"# {video.get('title', 'Unknown Title')}\n")
@@ -124,6 +121,11 @@ def main():
     seen = load_seen()
     print(f"[fetch] Previously seen videos: {len(seen)}")
     new_videos = get_new_videos(seen)
+
+    if not new_videos:
+        print("[fetch_youtube_transcripts] No new videos found. Exiting cleanly.")
+        save_seen(seen)
+        return []
 
     fetched = []
     no_transcript = []
