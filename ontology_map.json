@@ -1,0 +1,9 @@
+{
+  "semiconductor": ["tech_hardware", "ai_infrastructure"],
+  "manufacturing incentives": ["capex_cycle", "margin_expansion"],
+  "defense indigenization": ["defense_capex", "sovereign_survival"],
+  "hospital expansion": ["k_shaped_economy", "healthcare_real_estate"],
+  "data center": ["ai_infrastructure", "power_demand"],
+  "power grid": ["power_demand", "capex_cycle"],
+  "robotics adoption": ["margin_expansion", "labor_automation"]
+}
