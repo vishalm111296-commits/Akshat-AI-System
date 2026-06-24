@@ -15,8 +15,8 @@ tests = [
     {"name": "Unknown industry", "text": "Breakthrough in dyson sphere construction technology."}
 ]
 
-with open('test_results.md', 'w') as out_f:
-    out_f.write("# MVP 10 Macro-Event Tests\n\n")
+with open('docs/sector_test_results.md', 'w') as out_f:
+    out_f.write("# MVP Sector Discovery 10 Macro-Event Tests\n\n")
 
     for i, t in enumerate(tests):
         # write event to sample json
@@ -40,38 +40,22 @@ with open('test_results.md', 'w') as out_f:
             activated = "\n".join(lines[ap_start:ap_end]).strip()
 
             gf_start = ap_end + 1
-            framework = "\n".join(lines[gf_start:]).strip()
+            sec_start = lines.index("## Affected Sectors")
+            framework = "\n".join(lines[gf_start:sec_start]).strip()
+
+            sec_end = len(lines)
+            sectors = "\n".join(lines[sec_start+1:sec_end]).strip()
         except ValueError:
             activated = "Parse Error"
             framework = "Parse Error"
+            sectors = "Parse Error"
 
-        failure_analysis = "Success." if "No actionable principles" not in framework else "Failed to find matching tags in ontology map."
-
-        if t["name"] == "Nuclear incentives":
-            failure_analysis = "Failed due to lack of 'nuclear' or generic 'capex' synonym in ontology map."
-        elif t["name"] == "Logistics corridors":
-            failure_analysis = "Failed due to missing 'logistics' key in the ontology map."
-        elif t["name"] == "Water infrastructure":
-            failure_analysis = "Failed due to missing 'water infrastructure' key."
-        elif t["name"] == "Unknown industry":
-            failure_analysis = "Graceful failure on genuinely unknown industry."
+        failure_analysis = "Success." if "No sectors identified." not in sectors and "No actionable principles" not in framework else "Failed to map tags to principles/sectors due to hardcoded mapping limits."
 
         out_f.write(f"### Test {i+1}: {t['name']}\n")
         out_f.write(f"**Input:** {input_event}\n\n")
         out_f.write(f"**Activated principles:**\n{activated}\n\n")
         out_f.write(f"**Generated framework:**\n{framework}\n\n")
+        out_f.write(f"**Affected Sectors:**\n{sectors}\n\n")
         out_f.write(f"**Failure analysis:** {failure_analysis}\n\n")
         out_f.write("---\n\n")
-
-    out_f.write("""## FINAL SECTION
-
-**Answer:**
-Is this system producing reasoning? Or merely routing?
-
-**Verdict:** Merely routing.
-
-**Evidence:**
-1. In the `Nuclear incentives` test, the text "Govt subsidizes nuclear energy capex." generated exactly zero principles because the word "nuclear" was not explicitly hardcoded into the `ontology_map.json`, even though the word "capex" is a fundamental concept in the system. The system could not *reason* that nuclear capex is still capex.
-2. In the `Data center growth` test ("Hyperscaler data center growth consumes the power grid."), the system extracted predefined principles (MF-03, RM-02, SS-04) solely because "data center" and "power grid" were explicitly defined in the JSON map. It did not synthesize the relationship between AI infrastructure and baseload power constraints; it merely copy-pasted string arrays.
-3. The "Generated framework" output is literally just a hardcoded markdown string (`f"- Execute strategy: {t['name']}"`) looping over whatever dictionary keys happened to match substrings in the text. There is no generative synthesis, no contextual weighing, and no actual reasoning occurring. It is a deterministic key-value router.
-""")

@@ -8,3 +8,5 @@ None.
 
 ## Generated Framework
 No actionable principles found for this macro event.
+## Affected Sectors
+No sectors identified.
