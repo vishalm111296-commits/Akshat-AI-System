@@ -22,6 +22,9 @@ This repository is a **production-grade, modular, evidence-driven knowledge syst
 | L7 | `update_engine/` | Promotion and update rules |
 | L8 | `automation/` + `.github/workflows/` | Free automation (GitHub Actions + Python) |
 | L9 | `docs/` + `scripts/` | AI and human query interface |
+| L10 | `belief_engine/` | Belief Engine (Reserved) |
+| L11 | `predictions/` | Prediction Engine |
+| L12 | `performance/` | Performance Tracker |
 
 ## Quick Start
 
