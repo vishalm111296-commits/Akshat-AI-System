@@ -1,0 +1,44 @@
+{
+  "Convergence of Follow Government Subsidies & Avoid Capital-Intensive Execution Traps & Follow Geopolitical Supply-Chain Shifts": {
+    "primary": ["Semiconductors", "EMS Manufacturing"],
+    "secondary": ["Industrial Automation", "Specialty Chemicals"],
+    "beneficiaries": ["Industrial Real Estate", "Logistics Corridors"],
+    "risks": ["Consumer Staples", "Traditional IT Services"]
+  },
+  "Convergence of Follow Government Subsidies & Follow Geopolitical Supply-Chain Shifts & Avoid State-Owned Enterprises (PSUs) & Follow Monopsony Buyers": {
+    "primary": ["Private Defense Contractors", "Aerospace Subsystems"],
+    "secondary": ["Shipbuilding Components", "Precision Engineering"],
+    "beneficiaries": ["Specialty Alloys", "Defense R&D Services"],
+    "risks": ["State-Owned Defense PSUs", "Civilian Aviation"]
+  },
+  "Convergence of Follow Government Subsidies & Avoid Capital-Intensive Execution Traps & Avoid State-Owned Enterprises (PSUs)": {
+    "primary": ["Private Power Generation", "Nuclear Component Suppliers"],
+    "secondary": ["Heavy Engineering", "Uranium Mining"],
+    "beneficiaries": ["Power Transmission EPC", "Smart Grid Tech"],
+    "risks": ["State-Owned Power Utilities", "Fossil Fuels"]
+  },
+  "Convergence of Avoid Capital-Intensive Execution Traps & Follow Demographic Destiny": {
+    "primary": ["Private Healthcare Chains", "Diagnostics Labs"],
+    "secondary": ["Health Insurance", "Medical Devices"],
+    "beneficiaries": ["Pharma Supply Chain", "Healthcare Real Estate"],
+    "risks": ["Regulated Price-Cap Pharmaceuticals", "Heavy Industry"]
+  },
+  "Convergence of Avoid Capital-Intensive Execution Traps & Follow Demographic Destiny & Avoid Sunset / ESG Restricted Industries": {
+    "primary": ["Renewable Energy Generation", "Smart Grid Infrastructure"],
+    "secondary": ["EV Charging Networks", "Energy Storage"],
+    "beneficiaries": ["Copper/Aluminum Mining", "Power Trading Exchanges"],
+    "risks": ["Thermal Power", "Coal Mining"]
+  },
+  "Terminal Value Trap: Avoid Capital-Intensive Execution Traps": {
+    "primary": [],
+    "secondary": [],
+    "beneficiaries": [],
+    "risks": ["Heavy Manufacturing", "Capital Goods", "Traditional Infrastructure", "Airlines"]
+  },
+  "Null Framework": {
+    "primary": [],
+    "secondary": [],
+    "beneficiaries": [],
+    "risks": []
+  }
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "PRIN-001",
+    "title": "Follow Government Subsidies",
+    "description": "Government incentives provide a structural catalyst that offsets traditional cost-of-capital burdens.",
+    "activation_tags": ["incentive", "government", "subsidy", "pli"],
+    "polarity": "positive"
+  },
+  {
+    "id": "PRIN-002",
+    "title": "Avoid Capital-Intensive Execution Traps",
+    "description": "Heavy manufacturing historically traps capital due to execution delays and high interest rates.",
+    "activation_tags": ["capex", "manufacturing", "infrastructure"],
+    "polarity": "negative"
+  },
+  {
+    "id": "PRIN-003",
+    "title": "Follow Geopolitical Supply-Chain Shifts",
+    "description": "Global supply chain derisking forces capital into specific domestic sectors regardless of immediate valuations.",
+    "activation_tags": ["geopolitics", "supply_chain", "china_plus_one", "indigenization"],
+    "polarity": "positive"
+  },
+  {
+    "id": "PRIN-004",
+    "title": "Avoid State-Owned Enterprises (PSUs)",
+    "description": "Historically poor capital allocators that destroy shareholder value outside of strict monopolies.",
+    "activation_tags": ["psu", "government"],
+    "polarity": "negative"
+  },
+  {
+    "id": "PRIN-005",
+    "title": "Follow Monopsony Buyers",
+    "description": "A single massive guaranteed buyer (usually the state) secures long-term order books.",
+    "activation_tags": ["monopsony", "order_book"],
+    "polarity": "positive"
+  },
+  {
+    "id": "PRIN-006",
+    "title": "Follow Demographic Destiny",
+    "description": "Unavoidable societal shifts create massive addressable markets with inelastic demand.",
+    "activation_tags": ["demographics", "necessity"],
+    "polarity": "positive"
+  },
+  {
+    "id": "PRIN-007",
+    "title": "Avoid Sunset / ESG Restricted Industries",
+    "description": "Industries facing structural regulatory decline or ESG capital starvation.",
+    "activation_tags": ["sunset"],
+    "polarity": "negative"
+  }
+]
