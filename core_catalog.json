@@ -1,0 +1,44 @@
+[
+  {
+    "id": "SS-03",
+    "name": "Prefer margin expansion",
+    "type": "tactic",
+    "activation_tags": ["margin_expansion"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "GF-05",
+    "name": "K-shaped economy: buy profit-expansion segments",
+    "type": "tactic",
+    "activation_tags": ["k_shaped_economy", "healthcare_real_estate"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "MF-03",
+    "name": "Monitor AI cycle monetization",
+    "type": "tactic",
+    "activation_tags": ["ai_infrastructure"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "RM-02",
+    "name": "Avoid concentration risk",
+    "type": "constraint",
+    "activation_tags": ["tech_hardware", "ai_infrastructure"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "PC-04",
+    "name": "Sovereign Survival Capex",
+    "type": "tactic",
+    "activation_tags": ["defense_capex", "sovereign_survival"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "SS-04",
+    "name": "The Base-Load Bottleneck",
+    "type": "tactic",
+    "activation_tags": ["power_demand"],
+    "activation_condition": "ANY"
+  }
+]

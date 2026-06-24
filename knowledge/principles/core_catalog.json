@@ -1,0 +1,56 @@
+[
+  {
+    "id": "P-EarningsGravity",
+    "name": "Earnings Gravity",
+    "type": "parent",
+    "parent_id": null,
+    "domain": "Equity Valuation",
+    "activation_tags": ["margin_expansion", "earnings_growth"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "SS-03",
+    "name": "Prefer margin expansion",
+    "type": "child",
+    "parent_id": "P-EarningsGravity",
+    "domain": "Equity Valuation",
+    "activation_tags": ["margin_expansion", "pricing_power"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "GF-05",
+    "name": "K-shaped economy: buy profit-expansion segments",
+    "type": "tactic",
+    "parent_id": "SS-03",
+    "domain": "Geography",
+    "activation_tags": ["capex_cycle", "margin_expansion"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "P-AsymmetryLoss",
+    "name": "The Asymmetry of Loss",
+    "type": "parent",
+    "parent_id": null,
+    "domain": "Risk Management",
+    "activation_tags": ["concentration_risk", "leverage", "liquidity_crisis"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "RM-02",
+    "name": "Avoid concentration risk",
+    "type": "constraint",
+    "parent_id": "P-AsymmetryLoss",
+    "domain": "Risk Management",
+    "activation_tags": ["tech_hardware", "concentration_risk"],
+    "activation_condition": "ANY"
+  },
+  {
+    "id": "RM-03",
+    "name": "NEVER sell naked options",
+    "type": "constraint",
+    "parent_id": "P-AsymmetryLoss",
+    "domain": "Options",
+    "activation_tags": ["options_margin", "naked_calls", "naked_puts"],
+    "activation_condition": "ANY"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "tech_hardware": {
+    "Primary": ["Semiconductors", "EMS Manufacturing"],
+    "Secondary": ["Industrial Automation"],
+    "Beneficiary": ["Specialty Chemicals", "Logistics"],
+    "Risk": ["Legacy IT Services"]
+  },
+  "defense_capex": {
+    "Primary": ["Aerospace & Defense", "Shipbuilding"],
+    "Secondary": ["Defense Electronics", "Precision Machining"],
+    "Beneficiary": ["Specialty Steel", "R&D Testing Labs"],
+    "Risk": ["Consumer Discretionary (Crowding Out)"]
+  },
+  "k_shaped_economy": {
+    "Primary": ["Premium Retail", "Luxury Auto"],
+    "Secondary": ["Corporate Hospitals", "High-End Real Estate"],
+    "Beneficiary": ["Wealth Management", "Aviation"],
+    "Risk": ["Mass Market FMCG", "Entry-Level Auto"]
+  },
+  "power_demand": {
+    "Primary": ["Power Generation", "Grid Equipment"],
+    "Secondary": ["Smart Metering", "Switchgears"],
+    "Beneficiary": ["Copper Mining", "Industrial Cables"],
+    "Risk": ["Energy-Intensive Manufacturing"]
+  },
+  "margin_expansion": {
+    "Primary": ["Software & SaaS", "Asset-Light Platforms"],
+    "Secondary": ["Branded Consumer Staples"],
+    "Beneficiary": ["B2B Automation", "Cloud Providers"],
+    "Risk": ["Commodity Producers"]
+  }
+}
