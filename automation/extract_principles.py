@@ -36,7 +36,15 @@ def content_hash(filepath):
         return hashlib.sha256(f.read()).hexdigest()
 
 def is_ai_generated(filepath):
-    """Heuristic: flag files whose header declares AI-generated content."""
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must accurately detect AI-generated markers to prevent AI-generated content from being counted as a source.
+    """
     try:
         with open(filepath, encoding="utf-8", errors="ignore") as f:
             head = f.read(500).lower()
@@ -59,6 +67,15 @@ def extract_from_file(filepath):
     return hits
 
 def main():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Principles must be extracted only from new, non-AI sources and stored in knowledge/extracted_principles_pending.json.
+    """
     state = load_state()  # keyed by content hash
     results = []
 
