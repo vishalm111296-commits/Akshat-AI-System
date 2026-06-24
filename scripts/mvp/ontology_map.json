@@ -1,0 +1,7 @@
+{
+  "manufacturing incentives": ["capex_cycle", "margin_expansion"],
+  "semiconductor": ["ai_infrastructure", "tech_hardware"],
+  "rate cut": ["liquidity_up", "risk_on"],
+  "margin requirements": ["options_margin", "liquidity_crisis"],
+  "naked options": ["naked_calls", "naked_puts"]
+}
