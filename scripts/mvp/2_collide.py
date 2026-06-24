@@ -59,7 +59,17 @@ def synthesize_framework(activated_principles):
     reasoning_text = " ".join(reasoning_parts)
     return framework_title, reasoning_text
 
-def generate_report(event, activated, framework_title, reasoning, output_file=None):
+def discover_sectors(framework_title, sector_map):
+    # Retrieve the sector mapping for the exact framework title.
+    # If not found, return empty structures.
+    return sector_map.get(framework_title, {
+        "primary": [],
+        "secondary": [],
+        "beneficiaries": [],
+        "risks": []
+    })
+
+def generate_report(event, activated, framework_title, reasoning, sectors, output_file=None):
     lines = []
     event_id = event.get("event_id", "UNKNOWN-EVENT")
 
@@ -77,6 +87,27 @@ def generate_report(event, activated, framework_title, reasoning, output_file=No
 
     lines.append(f"\n**Synthesized Framework:** *{framework_title}*\n")
     lines.append(f"**Reasoning:** {reasoning}\n")
+
+    lines.append("**Affected Sectors:**")
+    if not sectors.get("primary"):
+        lines.append("- Primary: None Identified")
+    else:
+        lines.append(f"- Primary: {', '.join(sectors['primary'])}")
+
+    if not sectors.get("secondary"):
+        lines.append("- Secondary: None Identified")
+    else:
+        lines.append(f"- Secondary: {', '.join(sectors['secondary'])}")
+
+    if not sectors.get("beneficiaries"):
+        lines.append("- Beneficiaries: None Identified")
+    else:
+        lines.append(f"- Beneficiaries: {', '.join(sectors['beneficiaries'])}")
+
+    if not sectors.get("risks"):
+        lines.append("- Risks: None Identified")
+    else:
+        lines.append(f"- Risks: {', '.join(sectors['risks'])}\n")
 
     report_content = "\n".join(lines)
 
@@ -98,10 +129,12 @@ def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     catalog_path = os.path.join(repo_root, "knowledge", "principles", "core_catalog.json")
     ontology_path = os.path.join(repo_root, "scripts", "mvp", "ontology_map.json")
+    sector_map_path = os.path.join(repo_root, "scripts", "mvp", "sector_map.json")
     default_macro_path = os.path.join(repo_root, "scripts", "mvp", "sample_macro_event.json")
 
     catalog = load_json(catalog_path)
     ontology = load_json(ontology_path)
+    sector_map = load_json(sector_map_path)
 
     if args.macro:
         try:
@@ -118,12 +151,13 @@ def main():
     activated_principles = find_activated_principles(abstracted_tags, catalog)
 
     framework_title, reasoning_text = synthesize_framework(activated_principles)
+    sectors = discover_sectors(framework_title, sector_map)
 
     output_path = args.output
     if not output_path and not args.macro:
         output_path = os.path.join(repo_root, "docs", "mvp_output", f"generated_framework_report.md")
 
-    report = generate_report(event, activated_principles, framework_title, reasoning_text, output_path)
+    report = generate_report(event, activated_principles, framework_title, reasoning_text, sectors, output_path)
 
     # Also print to stdout for easy reading during tests
     if args.macro:
