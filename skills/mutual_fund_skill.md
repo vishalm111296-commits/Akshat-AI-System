@@ -1,3 +1,14 @@
+---
+name: Mutual Fund Analysis
+description: Evaluate mutual fund selection and SIP vs lump sum decisions.
+triggers:
+  - mutual fund
+  - sip
+  - lump sum
+  - index fund
+load_with: none
+---
+
 # Skill: Mutual Fund Analysis
 
 *Layer: L1 — Core Skills*

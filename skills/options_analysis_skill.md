@@ -1,3 +1,15 @@
+---
+name: Options Analysis
+description: Execute covered call or cash-secured put strategies for income.
+triggers:
+  - options
+  - covered call
+  - cash-secured put
+  - derivatives
+  - premium
+load_with: options_skill.py
+---
+
 # Skill: Options Analysis
 
 *Layer: L1 — Core Skills*

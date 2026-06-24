@@ -1,3 +1,15 @@
+---
+name: IPO Analysis
+description: Analyze IPOs based on business quality, valuation, and promoter credibility.
+triggers:
+  - ipo
+  - listing
+  - promoter
+  - subscription
+  - listing gain
+load_with: none
+---
+
 # Skill: IPO Analysis
 
 *Layer: L1 — Core Skills*

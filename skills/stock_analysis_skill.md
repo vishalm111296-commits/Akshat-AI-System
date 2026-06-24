@@ -1,3 +1,15 @@
+---
+name: Stock Analysis
+description: Analyze individual stocks using Akshat's 8-section framework.
+triggers:
+  - stock
+  - analysis
+  - equity
+  - shares
+  - ticker
+load_with: none
+---
+
 # Skill: Stock Analysis
 
 *Layer: L1 — Core Skills*
