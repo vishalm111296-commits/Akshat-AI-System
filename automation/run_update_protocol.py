@@ -7,14 +7,48 @@ from pathlib import Path
 from datetime import datetime
 
 STEPS = [
-    ("extract_principles",    "automation/extract_principles.py"),
-    ("contradiction_checker", "automation/contradiction_checker.py"),
-    ("update_recent_changes", "automation/update_recent_changes.py"),
-    ("update_frequency_table","automation/update_frequency_table.py"),
+    ("extract_principles",    "update_engine/extract_principles.py"),
+    ("contradiction_checker", "update_engine/contradiction_checker.py"),
+    ("update_recent_changes", "update_engine/update_recent_changes.py"),
+    ("update_frequency_table","update_engine/update_frequency_table.py"),
 ]
 
 # EXACT filename — Linux CI is case-sensitive
 MASTER = "knowledge/01_Akshat_Master_System.md"
+
+
+def pre_flight_check() -> bool:
+    """
+    DDD pre-flight: verify system invariants before any write operation.
+    Returns True if safe to proceed, False if a rule violation is detected.
+    Non-negotiable — called at the start of every automation run.
+    """
+    import os
+    from pathlib import Path
+
+    violations = []
+
+    # Rule 1: Master system file must exist and be non-empty
+    master = Path("knowledge/01_Akshat_Master_System.md")
+    if not master.exists() or master.stat().st_size == 0:
+        violations.append("VIOLATION: Master system file missing or empty")
+
+    # Rule 2: raw_sources/ must exist
+    if not Path("raw_sources").is_dir():
+        violations.append("VIOLATION: raw_sources/ directory missing")
+
+    # Rule 3: We are NOT running as a merge action (safety check)
+    github_event = os.environ.get("GITHUB_EVENT_NAME", "")
+    if github_event in ("push", "pull_request") and os.environ.get("GITHUB_BASE_REF"):
+        violations.append(f"VIOLATION: Automation triggered on merge event ({github_event}) — check workflow trigger config")
+
+    if violations:
+        for v in violations:
+            print(f"[PRE-FLIGHT FAILED] {v}")
+        return False
+
+    print("[PRE-FLIGHT PASSED] All invariants verified.")
+    return True
 
 
 def master_hash():
@@ -54,6 +88,8 @@ def run_step(name, script_path):
 
 def main():
     print(f'[pipeline] Started: {datetime.now().isoformat()}')
+    if not pre_flight_check():
+        sys.exit(1)
     print(f'[pipeline] Master System path: {MASTER}')
     pre_hash = master_hash()
     save_master_hash(pre_hash)

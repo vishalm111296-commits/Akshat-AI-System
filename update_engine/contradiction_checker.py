@@ -36,6 +36,15 @@ def check_negation_context(text, keyword):
     return any(neg in window for neg in NEGATION_MARKERS)
 
 def main():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must identify and report potential contradictions in knowledge/contradiction_report.md before any doctrine updates.
+    """
     if not os.path.exists(PENDING):
         print("[contradiction_checker] No pending extractions found. Run extract_principles.py first.")
         return

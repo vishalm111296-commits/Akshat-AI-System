@@ -138,14 +138,14 @@ class TestKnowledgeFiles:
 class TestAutomationScripts:
 
     REQUIRED = [
-        "automation/extract_principles.py",
-        "automation/contradiction_checker.py",
-        "automation/update_frequency_table.py",
-        "automation/update_recent_changes.py",
+        "update_engine/extract_principles.py",
+        "update_engine/contradiction_checker.py",
+        "update_engine/update_frequency_table.py",
+        "update_engine/update_recent_changes.py",
         "automation/run_update_protocol.py",
         "automation/fetch_youtube_transcripts.py",
         "automation/config_loader.py",
-        "automation/generate_changelog_entry.py",
+        "update_engine/generate_changelog_entry.py",
         "scripts/promote_to_master.py",
         "scripts/query_interface.py",
     ]
@@ -160,12 +160,12 @@ class TestAutomationScripts:
         assert "config.yaml" in content, "fetch script must read channel ID from config.yaml"
 
     def test_extract_uses_sha256(self):
-        with open(path("automation/extract_principles.py"), encoding="utf-8") as f:
+        with open(path("update_engine/extract_principles.py"), encoding="utf-8") as f:
             content = f.read()
         assert "sha256" in content
 
     def test_contradiction_checker_atomic_write(self):
-        with open(path("automation/contradiction_checker.py"), encoding="utf-8") as f:
+        with open(path("update_engine/contradiction_checker.py"), encoding="utf-8") as f:
             content = f.read()
         assert "os.replace" in content or ".tmp" in content
 

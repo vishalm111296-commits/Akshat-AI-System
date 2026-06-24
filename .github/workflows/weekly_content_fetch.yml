@@ -84,7 +84,7 @@ jobs:
           pytest tests/test_pipeline_integrity.py -v --tb=short 2>&1
 
       - name: Generate changelog entry
-        run: python automation/generate_changelog_entry.py
+        run: python update_engine/generate_changelog_entry.py
 
       - name: Show what files changed
         run: |
