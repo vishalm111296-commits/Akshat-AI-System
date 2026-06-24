@@ -1,1 +1,12 @@
-{}
+{
+  "7ce73e7d784d33e9769a19dbd58711e9b92bfffec53d4640b0feaf4d401687a0": {
+    "file": "raw_sources/paid_post/Paid_post_19_Jun_2026.md",
+    "status": "extracted",
+    "ts": "2026-06-24T04:49:31.972110"
+  },
+  "bdb4862736e994788834dc9d57da0d11d4a670a853334a3860932add0efd63ed": {
+    "file": "raw_sources/paid_post/Paid_post.20.Jun.2026.md",
+    "status": "extracted",
+    "ts": "2026-06-24T04:49:31.972354"
+  }
+}

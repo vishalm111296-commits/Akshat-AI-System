@@ -20,9 +20,9 @@ This repository is maintained by its owner. External contributors may submit:
 ## Quarterly Keyword Review (REQUIRED)
 
 Every quarter, a maintainer must:
-1. Review the `PRINCIPLE_KEYWORDS` list in `automation/extract_principles.py`
+1. Review the `PRINCIPLE_KEYWORDS` list in `update_engine/extract_principles.py`
 2. Add any new terminology Akshat Shrivastava has introduced in recent videos/posts
-3. Review the `CONTRADICTION_PAIRS` list in `automation/contradiction_checker.py`
+3. Review the `CONTRADICTION_PAIRS` list in `update_engine/contradiction_checker.py`
 4. Add any new pairs of potentially conflicting stances
 5. Update `last_reviewed` in `operating_system/config.yaml` under `keyword_review`
 6. Commit with message: `maintenance: quarterly keyword review [YYYY-QN]`

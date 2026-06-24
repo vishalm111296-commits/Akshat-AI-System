@@ -14,6 +14,15 @@ RECENT = "knowledge/04_Akshat_Recent_Changes.md"
 ARCHIVE_AFTER_DAYS = 365
 
 def load_approved():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must only return records with an 'APPROVED' status, ensuring only human-validated data proceeds.
+    """
     if not os.path.exists(PENDING):
         return []
     try:
@@ -35,6 +44,15 @@ def build_entry(record):
     )
 
 def main():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must append approved extraction entries to knowledge/04_Akshat_Recent_Changes.md and update record status.
+    """
     approved = load_approved()
     if not approved:
         print("[update_recent_changes] No APPROVED records. Nothing to append.")

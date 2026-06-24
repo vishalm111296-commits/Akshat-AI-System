@@ -47,12 +47,12 @@ automation:
   fetch_schedule: "0 6 * * 1"    # Every Monday 6am UTC
   max_transcript_age_days: 7
   pipeline_scripts:
-    - "automation/extract_principles.py"
-    - "automation/contradiction_checker.py"
-    - "automation/update_recent_changes.py"
-    - "automation/update_frequency_table.py"
+    - "update_engine/extract_principles.py"
+    - "update_engine/contradiction_checker.py"
+    - "update_engine/update_recent_changes.py"
+    - "update_engine/update_frequency_table.py"
 
 keyword_review:
   cadence: "quarterly"
-  instruction: "Review and expand PRINCIPLE_KEYWORDS in automation/extract_principles.py every quarter to capture new terminology Akshat introduces."
+  instruction: "Review and expand PRINCIPLE_KEYWORDS in update_engine/extract_principles.py every quarter to capture new terminology Akshat introduces."
   last_reviewed: "2026-06-19"

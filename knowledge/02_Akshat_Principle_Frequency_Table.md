@@ -1,6 +1,6 @@
 # 02 — Akshat Principle Frequency Table
 
-> **AUTO-UPDATABLE** — This file is updated by `automation/run_update_protocol.py` via `automation/update_frequency_table.py`. Frequency counts increment only from human-APPROVED extraction records.
+> **AUTO-UPDATABLE** — This file is updated by `automation/run_update_protocol.py` via `update_engine/update_frequency_table.py`. Frequency counts increment only from human-APPROVED extraction records.
 
 *Last Updated: 2026-06-19*
 *Audit Pass 2 Fix: RM-03 status corrected to Doctrine; threshold aligned to 8.*
@@ -128,4 +128,4 @@
 
 *Source registry: `knowledge/03_Akshat_Source_Database.md`*
 *Promotion log: `CHANGELOG.md`*
-*Contradiction check tool: `automation/contradiction_checker.py`*
+*Contradiction check tool: `update_engine/contradiction_checker.py`*

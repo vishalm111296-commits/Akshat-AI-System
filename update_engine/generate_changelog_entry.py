@@ -32,7 +32,15 @@ def get_unmerged_entries():
 
 
 def generate_run_summary():
-    """Always generate a run-summary so the changelog is never silent."""
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must accurately count raw sources in the repository to provide an audit trail of ingested evidence.
+    """
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
     # Count raw sources for evidence
     yt_count = len(glob.glob("raw_sources/youtube_transcripts/*.txt"))

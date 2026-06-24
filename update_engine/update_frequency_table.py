@@ -47,6 +47,15 @@ KEYWORD_TO_PID = {
 }
 
 def load_approved():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must only return human-APPROVED extraction records for frequency counting.
+    """
     if not os.path.exists(PENDING):
         return []
     try:
@@ -55,7 +64,15 @@ def load_approved():
         return []
 
 def increment_count(content, pid):
-    """Find the table row for pid and increment its Count column."""
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must increment the count of a specific principle in the frequency table by exactly one.
+    """
     pattern = re.compile(
         r'(\|\s*' + re.escape(pid) + r'\s*\|[^|]+\|\s*)(\d+)(\s*\|)',
         re.MULTILINE
@@ -69,6 +86,15 @@ def increment_count(content, pid):
     return new_content, changed
 
 def main():
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Must atomically update knowledge/02_Akshat_Principle_Frequency_Table.md based on approved sources.
+    """
     approved = load_approved()
     if not approved:
         print("[update_frequency_table] No APPROVED records found. Set status='APPROVED' in pending JSON.")
