@@ -20,6 +20,9 @@ L6  workflows/            → How to execute each task
 L7  update_engine/        → How evidence becomes doctrine
 L8  automation/ + .github/→ Free automation (GitHub Actions + Python)
 L9  docs/ + scripts/      → Human and AI query interface
+L10 belief_engine/        → Belief Engine (Reserved)
+L11 predictions/          → Prediction Engine
+L12 performance/          → Performance Tracker
 ```
 
 ## Data Flow
