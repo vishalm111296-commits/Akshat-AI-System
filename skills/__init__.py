@@ -1,25 +1,14 @@
 """
-L1 — Core Skills
-Atomic, reusable analysis capabilities.
-Each skill is a pure function module. Import only what a workflow needs.
+Skills package for Akshat-AI-System.
+
+IMPORTANT: Do not import all skills at startup.
+Use skill_loader.load_skill(task_description) to load
+only the skill relevant to the current task.
+
+Token-efficient context loading: 2,000 lines of focused
+context beats 10,000 lines of scattered context.
 """
 
-from .valuation_skill import ValuationSkill
-from .macro_skill import MacroSkill
-from .geographic_filter_skill import GeographicFilterSkill
-from .position_sizing_skill import PositionSizingSkill
-from .options_skill import OptionsSkill
-from .dma_skill import DMASkill
-from .earnings_skill import EarningsSkill
-from .real_returns_skill import RealReturnsSkill
+from skills.skill_loader import load_skill, list_available_skills
 
-__all__ = [
-    "ValuationSkill",
-    "MacroSkill",
-    "GeographicFilterSkill",
-    "PositionSizingSkill",
-    "OptionsSkill",
-    "DMASkill",
-    "EarningsSkill",
-    "RealReturnsSkill",
-]
+__all__ = ["load_skill", "list_available_skills"]

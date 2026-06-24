@@ -1,3 +1,15 @@
+---
+name: Valuation
+description: Assess whether an asset is cheap, fair, or expensive relative to history.
+triggers:
+  - valuation
+  - pe ratio
+  - intrinsic value
+  - cheap
+  - expensive
+load_with: valuation_skill.py
+---
+
 # Skill: Valuation
 
 *Layer: L1 — Core Skills*

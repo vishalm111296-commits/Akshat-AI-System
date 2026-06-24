@@ -1,3 +1,15 @@
+---
+name: Macro Analysis
+description: Assess global macro environment including liquidity and interest rates.
+triggers:
+  - macro
+  - liquidity
+  - interest rates
+  - inflation
+  - fii
+load_with: macro_skill.py
+---
+
 # Skill: Macro Analysis
 
 *Layer: L1 — Core Skills*

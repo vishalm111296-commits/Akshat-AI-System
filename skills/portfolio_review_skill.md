@@ -1,3 +1,15 @@
+---
+name: Portfolio Review
+description: Audit portfolio for liquidity, diversification, and concentration risk.
+triggers:
+  - portfolio
+  - review
+  - audit
+  - asset allocation
+  - diversification
+load_with: none
+---
+
 # Skill: Portfolio Review
 
 *Layer: L1 — Core Skills*

@@ -1,3 +1,15 @@
+---
+name: Earnings Analysis
+description: Interpret quarterly earnings reports and assess thesis integrity.
+triggers:
+  - earnings
+  - quarterly
+  - eps
+  - revenue
+  - guidance
+load_with: earnings_skill.py
+---
+
 # Skill: Earnings Analysis
 
 *Layer: L1 — Core Skills*
