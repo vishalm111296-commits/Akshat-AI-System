@@ -1,0 +1,10 @@
+{
+  "semiconductor": ["capex", "geopolitics", "supply_chain"],
+  "defense": ["government", "psu", "monopsony", "indigenization"],
+  "hospital": ["demographics", "pricing_power", "capex", "necessity"],
+  "data center": ["capex", "power", "real_estate"],
+  "logistics": ["formalization", "infrastructure", "capex"],
+  "power": ["capex", "necessity", "sunset", "infrastructure"],
+  "robotics": ["automation", "capex", "manufacturing"],
+  "nuclear": ["capex", "power", "government"]
+}
