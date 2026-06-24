@@ -1,0 +1,72 @@
+{
+  "Semiconductors": {
+    "primary": ["CG Power", "Kaynes Technology"],
+    "secondary": ["Moschip"],
+    "watchlist": ["Tata Electronics (Unlisted)"]
+  },
+  "EMS Manufacturing": {
+    "primary": ["Dixon Tech", "Amber Enterprises"],
+    "secondary": ["Syrma SGS"],
+    "watchlist": ["Avalon Tech"]
+  },
+  "Private Defense Contractors": {
+    "primary": ["Data Patterns", "Zen Tech"],
+    "secondary": ["MTAR Tech"],
+    "watchlist": ["Solar Industries"]
+  },
+  "Aerospace Subsystems": {
+    "primary": ["Azad Engineering", "Dynamatic Tech"],
+    "secondary": [],
+    "watchlist": []
+  },
+  "Private Power Generation": {
+    "primary": ["Tata Power", "Adani Power"],
+    "secondary": ["JSW Energy"],
+    "watchlist": []
+  },
+  "Nuclear Component Suppliers": {
+    "primary": ["BHEL", "L&T"],
+    "secondary": ["Walchandnagar Industries"],
+    "watchlist": []
+  },
+  "Private Healthcare Chains": {
+    "primary": ["Apollo Hospitals", "Max Healthcare"],
+    "secondary": ["Medanta (Global Health)"],
+    "watchlist": ["Fortis Healthcare"]
+  },
+  "Diagnostics Labs": {
+    "primary": ["Dr Lal PathLabs", "Metropolis"],
+    "secondary": ["Vijaya Diagnostic"],
+    "watchlist": []
+  },
+  "Renewable Energy Generation": {
+    "primary": ["KPIL", "Tata Power"],
+    "secondary": ["Adani Green"],
+    "watchlist": ["Suzlon"]
+  },
+  "Smart Grid Infrastructure": {
+    "primary": ["Hitachi Energy", "ABB India"],
+    "secondary": ["Siemens India"],
+    "watchlist": []
+  },
+  "Heavy Manufacturing": {
+    "primary": ["L&T"],
+    "secondary": ["Thermax"],
+    "watchlist": ["BEML"]
+  },
+  "Capital Goods": {
+    "primary": ["CG Power", "Siemens India"],
+    "secondary": ["ABB India"],
+    "watchlist": []
+  },
+  "Traditional Infrastructure": {
+    "primary": ["L&T", "PNC Infratech"],
+    "secondary": ["KNR Constructions"],
+    "watchlist": []
+  },
+  "Airlines": {
+    "primary": ["InterGlobe Aviation (Indigo)"],
+    "secondary": [],
+    "watchlist": ["SpiceJet"]
+  }
+}

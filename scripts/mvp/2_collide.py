@@ -69,7 +69,29 @@ def discover_sectors(framework_title, sector_map):
         "risks": []
     })
 
-def generate_report(event, activated, framework_title, reasoning, sectors, output_file=None):
+def discover_stocks(sectors, stock_map):
+    # Collects stocks for all primary and secondary sectors.
+    # In a real system, we wouldn't map stocks to "risk" sectors as buys.
+    all_primary_stocks = set()
+    all_secondary_stocks = set()
+    all_watchlist_stocks = set()
+
+    # We only pull candidate stocks from Primary and Secondary sectors identified by the framework.
+    candidate_sectors = sectors.get("primary", []) + sectors.get("secondary", [])
+
+    for sector in candidate_sectors:
+        mapped = stock_map.get(sector, {})
+        all_primary_stocks.update(mapped.get("primary", []))
+        all_secondary_stocks.update(mapped.get("secondary", []))
+        all_watchlist_stocks.update(mapped.get("watchlist", []))
+
+    return {
+        "primary": sorted(list(all_primary_stocks)),
+        "secondary": sorted(list(all_secondary_stocks)),
+        "watchlist": sorted(list(all_watchlist_stocks))
+    }
+
+def generate_report(event, activated, framework_title, reasoning, sectors, stocks, output_file=None):
     lines = []
     event_id = event.get("event_id", "UNKNOWN-EVENT")
 
@@ -105,9 +127,25 @@ def generate_report(event, activated, framework_title, reasoning, sectors, outpu
         lines.append(f"- Beneficiaries: {', '.join(sectors['beneficiaries'])}")
 
     if not sectors.get("risks"):
-        lines.append("- Risks: None Identified")
+        lines.append("- Risks: None Identified\n")
     else:
         lines.append(f"- Risks: {', '.join(sectors['risks'])}\n")
+
+    lines.append("**Candidate Stocks:**")
+    if not stocks.get("primary"):
+        lines.append("- Primary Stocks: None Identified")
+    else:
+        lines.append(f"- Primary Stocks: {', '.join(stocks['primary'])}")
+
+    if not stocks.get("secondary"):
+        lines.append("- Secondary Stocks: None Identified")
+    else:
+        lines.append(f"- Secondary Stocks: {', '.join(stocks['secondary'])}")
+
+    if not stocks.get("watchlist"):
+        lines.append("- Watchlist: None Identified")
+    else:
+        lines.append(f"- Watchlist: {', '.join(stocks['watchlist'])}\n")
 
     report_content = "\n".join(lines)
 
@@ -130,11 +168,13 @@ def main():
     catalog_path = os.path.join(repo_root, "knowledge", "principles", "core_catalog.json")
     ontology_path = os.path.join(repo_root, "scripts", "mvp", "ontology_map.json")
     sector_map_path = os.path.join(repo_root, "scripts", "mvp", "sector_map.json")
+    stock_map_path = os.path.join(repo_root, "scripts", "mvp", "stock_map.json")
     default_macro_path = os.path.join(repo_root, "scripts", "mvp", "sample_macro_event.json")
 
     catalog = load_json(catalog_path)
     ontology = load_json(ontology_path)
     sector_map = load_json(sector_map_path)
+    stock_map = load_json(stock_map_path)
 
     if args.macro:
         try:
@@ -152,12 +192,13 @@ def main():
 
     framework_title, reasoning_text = synthesize_framework(activated_principles)
     sectors = discover_sectors(framework_title, sector_map)
+    stocks = discover_stocks(sectors, stock_map)
 
     output_path = args.output
     if not output_path and not args.macro:
         output_path = os.path.join(repo_root, "docs", "mvp_output", f"generated_framework_report.md")
 
-    report = generate_report(event, activated_principles, framework_title, reasoning_text, sectors, output_path)
+    report = generate_report(event, activated_principles, framework_title, reasoning_text, sectors, stocks, output_path)
 
     # Also print to stdout for easy reading during tests
     if args.macro:
