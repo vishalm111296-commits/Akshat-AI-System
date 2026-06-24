@@ -1,0 +1,313 @@
+{
+  "nodes": [
+    {
+      "id": "AI_SUPERCYCLE",
+      "type": "MacroTrend",
+      "aliases": [
+        "AI Supercycle",
+        "Artificial Intelligence",
+        "AI",
+        "AI boom"
+      ]
+    },
+    {
+      "id": "NVIDIA",
+      "type": "Company",
+      "aliases": [
+        "NVIDIA",
+        "Nvidia",
+        "NVDA"
+      ]
+    },
+    {
+      "id": "MICROSOFT",
+      "type": "Company",
+      "aliases": [
+        "Microsoft",
+        "MSFT"
+      ]
+    },
+    {
+      "id": "US_TECH",
+      "type": "Sector",
+      "aliases": [
+        "US Tech",
+        "US Technology",
+        "Top US Tech",
+        "US Tech Sector"
+      ]
+    },
+    {
+      "id": "GOLD",
+      "type": "AssetClass",
+      "aliases": [
+        "Gold",
+        "Physical Gold",
+        "gold accumulation",
+        "gold"
+      ]
+    },
+    {
+      "id": "DE_DOLLARIZATION",
+      "type": "MacroTrend",
+      "aliases": [
+        "de-dollarization",
+        "dedollarization",
+        "De-dollarization"
+      ]
+    },
+    {
+      "id": "INDIA_EQUITIES",
+      "type": "AssetClass",
+      "aliases": [
+        "Indian equities",
+        "India Equities",
+        "Indian markets"
+      ]
+    },
+    {
+      "id": "BARBELL_PORTFOLIO",
+      "type": "InvestmentPrinciple",
+      "aliases": [
+        "Barbell Portfolio",
+        "barbell framework",
+        "barbell approach"
+      ]
+    },
+    {
+      "id": "DIVERSIFICATION",
+      "type": "InvestmentPrinciple",
+      "aliases": [
+        "Diversification",
+        "diversify"
+      ]
+    },
+    {
+      "id": "INR_DEPRECIATION",
+      "type": "Risk",
+      "aliases": [
+        "INR depreciation",
+        "INR weakness",
+        "rupee depreciation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "GOLD",
+      "target": "US_TECH",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "04_Akshat_Recent_Changes.md",
+      "evidence_snippet": "**Recent View (as disclosed publicly):**\n- ~70% Equities, ~20% Real Estate, ~10% Alternatives (Gold + Bitcoin)\n- Within equities: Majority allocation toward US Technology\n- India retained mainly for diversification\n- Additional exposure: Latin America, Southeast Asia, UAE",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "US_TECH",
+      "target": "DIVERSIFICATION",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "04_Akshat_Recent_Changes.md",
+      "evidence_snippet": "**Recent View (as disclosed publicly):**\n- ~70% Equities, ~20% Real Estate, ~10% Alternatives (Gold + Bitcoin)\n- Within equities: Majority allocation toward US Technology\n- India retained mainly for diversification\n- Additional exposure: Latin America, Southeast Asia, UAE",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "BARBELL_PORTFOLIO",
+      "target": "GOLD",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Use a **barbell portfolio** \u2014 never live in the middle.\n- **Left side** (preservation): Cash, physical gold, selective hard assets, liquid reserves for crisis buying.\n- **Right side** (growth asymmetry): AI, top technology firms, software, cybersecurity, high-quality global equities, tactical opportunities.\n- Do not confuse stable-looking but mediocre assets with safety. True safety protects purchasing power, liquidity, and optionality.\n- Do not confuse high GDP narrative with growth. True gro",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "AI_SUPERCYCLE",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Use a **barbell portfolio** \u2014 never live in the middle.\n- **Left side** (preservation): Cash, physical gold, selective hard assets, liquid reserves for crisis buying.\n- **Right side** (growth asymmetry): AI, top technology firms, software, cybersecurity, high-quality global equities, tactical opportunities.\n- Do not confuse stable-looking but mediocre assets with safety. True safety protects purchasing power, liquidity, and optionality.\n- Do not confuse high GDP narrative with growth. True gro",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "AI_SUPERCYCLE",
+      "target": "US_TECH",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Never analyze a stock in isolation from its country, currency, and capital market context.\n- Default comparison: **US vs India**, and occasionally China as a tactical catch-up trade.\n- US markets, especially top tech and AI-linked firms, are often structurally more investable than India: better profit pools, deeper capital markets, superior monetization, stronger currency exposure.\n- India is often a **rotation/trading market**. Top US tech can be a **structural compounding market**.\n- Always ",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INR_DEPRECIATION",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- India is **not automatically a buy-and-forget market**. It must be treated as highly valuation-sensitive and highly segment-specific.\n- Key structural concern: persistent current account deficit, pressure on capital account, INR depreciation, weaker foreign capital support.\n- Major hidden risk: **nominal returns** can look acceptable while real returns become weak after INR depreciation adjustment.\n- Foreign investors evaluate India in **dollar terms**. If INR keeps weakening, India must deliv",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INR_DEPRECIATION",
+      "target": "AI_SUPERCYCLE",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Track **global liquidity** first. Liquidity is one of the most important variables behind asset price inflation and drawdowns.\n- Track **interest-rate direction** and probability of QE, easing, or liquidity support.\n- Track **INR depreciation** and convert Indian returns into real, currency-adjusted returns.\n- Track FII flows, capital rotation, energy prices, and oil-linked inflation risks.\n- Distinguish: is the drawdown **V-shaped panic** (buying opportunity) or **W-shaped structural damage**",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "DIVERSIFICATION",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Diversify across countries, currencies, and asset classes. One-country SIP-only investing is no longer sufficient.\n- Position sizing is non-negotiable.\n- Keep **dry powder**. Regularly take profits from overheated winners and rebuild cash.\n- **Buy in zones**. Predefine where you add: on support, on breakout, or on deeper correction.\n- Do not panic-sell Indian markets at fear extremes. Relief rallies often come. Use rebounds to rotate capital intelligently.\n- Keep **physical gold** or equivalen",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INDIA_EQUITIES",
+      "target": "GOLD",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Diversify across countries, currencies, and asset classes. One-country SIP-only investing is no longer sufficient.\n- Position sizing is non-negotiable.\n- Keep **dry powder**. Regularly take profits from overheated winners and rebuild cash.\n- **Buy in zones**. Predefine where you add: on support, on breakout, or on deeper correction.\n- Do not panic-sell Indian markets at fear extremes. Relief rallies often come. Use rebounds to rotate capital intelligently.\n- Keep **physical gold** or equivalen",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "DIVERSIFICATION",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "01_Akshat_Master_System.md",
+      "evidence_snippet": "- Diversify across countries, currencies, and asset classes. One-country SIP-only investing is no longer sufficient.\n- Position sizing is non-negotiable.\n- Keep **dry powder**. Regularly take profits from overheated winners and rebuild cash.\n- **Buy in zones**. Predefine where you add: on support, on breakout, or on deeper correction.\n- Do not panic-sell Indian markets at fear extremes. Relief rallies often come. Use rebounds to rotate capital intelligently.\n- Keep **physical gold** or equivalen",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INR_DEPRECIATION",
+      "target": "US_TECH",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "02_Akshat_Principle_Frequency_Table.md",
+      "evidence_snippet": "| ID | Principle | Count | Status | Sources (Sample) |\n|---|---|---|---|---|\n| GF-01 | India is valuation-sensitive, not auto-buy | 12 | Doctrine | YT-2026-001, YT-2026-002, CP-2026-001, CP-2026-002 |\n| GF-02 | Evaluate India in dollar terms (INR depreciation) | 9 | Doctrine | YT-2026-001, CP-2026-001, CP-2026-002 |\n| GF-03 | US tech is often structurally superior to India | 10 | Doctrine | YT-2026-001, YT-2026-002, CP-2026-001 |\n| GF-04 | GDP growth is not an investment thesis | 8 | Doctrine | ",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "US_TECH",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "- Almost 70% is US Tech (this is my biggest bet on growth). Why? this is pulling the entire world's GDP up. Take tech out, we have negative growth everywhere.\n- 20% is Indian equities (which I plan to retain for diversification). I do not expect any magic here for next 3-5 years.\n- 10% would be LATAM/SEA/UAE equities like: Meli, Emaar etc.",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INDIA_EQUITIES",
+      "target": "DIVERSIFICATION",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "- Almost 70% is US Tech (this is my biggest bet on growth). Why? this is pulling the entire world's GDP up. Take tech out, we have negative growth everywhere.\n- 20% is Indian equities (which I plan to retain for diversification). I do not expect any magic here for next 3-5 years.\n- 10% would be LATAM/SEA/UAE equities like: Meli, Emaar etc.",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "DIVERSIFICATION",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "1) Own 50-60% (at least) assets for growth (especially if you are young).\n2) If you can't own RE, own gold (physical). This is for wealth protection.\n3) Diversify as much as possible (eg. if you own ONLY India, own US; & vice-versa).",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "US_TECH",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "## Main Points\n- Portfolio allocation disclosed as 70% Equities, 20% Real Estate, and 10% alternates.\n- Equity allocation includes US Tech, Indian equities, and LATAM/SEA/UAE equities.\n- States that Gold/BTC are not intended to be sold and cash is parked in short-term bonds.",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INDIA_EQUITIES",
+      "target": "GOLD",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "## Main Points\n- Portfolio allocation disclosed as 70% Equities, 20% Real Estate, and 10% alternates.\n- Equity allocation includes US Tech, Indian equities, and LATAM/SEA/UAE equities.\n- States that Gold/BTC are not intended to be sold and cash is parked in short-term bonds.",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INDIA_EQUITIES",
+      "target": "US_TECH",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "### Stocks\n- Indian equities\n- US Tech equities\n- LATAM/SEA/UAE equities",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "US_TECH",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "| Item | Value |\n|--------|--------|\n| Allocation | 70% Equities |\n| Allocation | 20% Real Estate |\n| Allocation | 10% alternates: gold, BTC primarily |\n| Other | Almost 70% of equity is US Tech |\n| Other | 20% is Indian equities |\n| Other | 10% is LATAM/SEA/UAE equities |\n| Other | 4-5 days |\n| Other | 3-5 years |\n| Other | 50-60% assets for growth |",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "US_TECH",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "| Item | Value |\n|--------|--------|\n| Allocation | 70% Equities |\n| Allocation | 20% Real Estate |\n| Allocation | 10% alternates: gold, BTC primarily |\n| Other | Almost 70% of equity is US Tech |\n| Other | 20% is Indian equities |\n| Other | 10% is LATAM/SEA/UAE equities |\n| Other | 4-5 days |\n| Other | 3-5 years |\n| Other | 50-60% assets for growth |",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "INDIA_EQUITIES",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "## Explicit Actions Mentioned\n- Buy: UNKNOWN\n- Sell:\n  - Do not want to sell Gold/BTC\n  - Do NOT wish to sell Real Estate\n- Hold:\n  - Retain Indian equities for diversification\n  - Own gold only in physical format\n- Wait: UNKNOWN",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "INDIA_EQUITIES",
+      "target": "DIVERSIFICATION",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "## Explicit Actions Mentioned\n- Buy: UNKNOWN\n- Sell:\n  - Do not want to sell Gold/BTC\n  - Do NOT wish to sell Real Estate\n- Hold:\n  - Retain Indian equities for diversification\n  - Own gold only in physical format\n- Wait: UNKNOWN",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "DIVERSIFICATION",
+      "target": "GOLD",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "Paid_post_19_Jun_2026.md",
+      "evidence_snippet": "## Explicit Actions Mentioned\n- Buy: UNKNOWN\n- Sell:\n  - Do not want to sell Gold/BTC\n  - Do NOT wish to sell Real Estate\n- Hold:\n  - Retain Indian equities for diversification\n  - Own gold only in physical format\n- Wait: UNKNOWN",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "GOLD",
+      "target": "AI_SUPERCYCLE",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "portfolio_review_skill.md",
+      "evidence_snippet": "### Step 2: Barbell Check\n- Left side (preservation): Cash, Gold, liquid instruments \u2014 what % of total?\n- Right side (growth): Equities, tech, AI exposure \u2014 what % of total?\n- Middle (mediocre): Fixed deposits, long-duration bonds, underperforming real estate \u2014 flag these",
+      "timestamp": "2026-06-24"
+    },
+    {
+      "source": "AI_SUPERCYCLE",
+      "target": "MICROSOFT",
+      "relationship": "depends_on",
+      "confidence": 0.5,
+      "evidence_file": "macro_analysis_skill.md",
+      "evidence_snippet": "### Step 5: AI Cycle Monetization Check\n- Is the AI infrastructure buildout still accelerating?\n- Are hyperscalers (MSFT, AMZN, GOOGL, META) still guiding capex growth?\n- Is software/cybersecurity/healthcare layer beginning to monetize?",
+      "timestamp": "2026-06-24"
+    }
+  ]
+}

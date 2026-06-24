@@ -1,0 +1,42 @@
+{
+  "AI_SUPERCYCLE": {
+    "type": "MacroTrend",
+    "aliases": ["AI Supercycle", "Artificial Intelligence", "AI", "AI boom"]
+  },
+  "NVIDIA": {
+    "type": "Company",
+    "aliases": ["NVIDIA", "Nvidia", "NVDA"]
+  },
+  "MICROSOFT": {
+    "type": "Company",
+    "aliases": ["Microsoft", "MSFT"]
+  },
+  "US_TECH": {
+    "type": "Sector",
+    "aliases": ["US Tech", "US Technology", "Top US Tech", "US Tech Sector"]
+  },
+  "GOLD": {
+    "type": "AssetClass",
+    "aliases": ["Gold", "Physical Gold", "gold accumulation", "gold"]
+  },
+  "DE_DOLLARIZATION": {
+    "type": "MacroTrend",
+    "aliases": ["de-dollarization", "dedollarization", "De-dollarization"]
+  },
+  "INDIA_EQUITIES": {
+    "type": "AssetClass",
+    "aliases": ["Indian equities", "India Equities", "Indian markets"]
+  },
+  "BARBELL_PORTFOLIO": {
+    "type": "InvestmentPrinciple",
+    "aliases": ["Barbell Portfolio", "barbell framework", "barbell approach"]
+  },
+  "DIVERSIFICATION": {
+    "type": "InvestmentPrinciple",
+    "aliases": ["Diversification", "diversify"]
+  },
+  "INR_DEPRECIATION": {
+    "type": "Risk",
+    "aliases": ["INR depreciation", "INR weakness", "rupee depreciation"]
+  }
+}

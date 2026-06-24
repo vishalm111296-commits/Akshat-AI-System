@@ -1,0 +1,24 @@
+{
+  "entity_types": [
+    "Person",
+    "Company",
+    "Sector",
+    "Theme",
+    "Country",
+    "AssetClass",
+    "Risk",
+    "InvestmentPrinciple",
+    "MacroTrend",
+    "EconomicIndicator"
+  ],
+  "relationship_types": [
+    "supports",
+    "contradicts",
+    "causes",
+    "influenced_by",
+    "belongs_to",
+    "strengthens",
+    "weakens",
+    "depends_on"
+  ]
+}
