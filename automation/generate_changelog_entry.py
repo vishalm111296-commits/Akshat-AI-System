@@ -49,6 +49,15 @@ def generate_run_summary():
 
 
 def append_to_changelog(entries, run_summary):
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: All automation run summaries and approved entries must be appended to CHANGELOG.md without altering historical data.
+    """
     content_to_add = ""
     if entries:
         content_to_add += "\n---\n"

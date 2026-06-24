@@ -91,6 +91,15 @@ def fetch_transcript(video_id):
 
 
 def save_transcript(video, text):
+    """
+    # ⚠️ DDD GATE: Non-trivial write operation.
+    # Before modifying this function's logic, follow Doubt-Driven Development:
+    # 1. Write a CLAIM: what this function guarantees
+    # 2. Extract the smallest reviewable artifact (this function's diff)
+    # 3. Invoke adversarial review: "Find what is WRONG with this. Assume overconfidence."
+    # 4. Log the decision in docs/ddd-decision-log.md
+    # CONTRACT: Transcripts must be saved verbatim to raw_sources/youtube_transcripts/ with correct naming conventions.
+    """
     pub_raw = video.get("published", "")[:10]
     pub_date = pub_raw if pub_raw else datetime.now().strftime("%Y-%m-%d")
     vid_id = video["yt_videoid"]
