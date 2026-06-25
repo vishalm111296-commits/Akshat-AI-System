@@ -36,8 +36,9 @@ jobs:
           mkdir -p .automation_state
           mkdir -p raw_sources/youtube_transcripts
           mkdir -p raw_sources/community_posts
-          mkdir -p raw_sources/paid_posts
+          mkdir -p raw_sources/paid_post
           mkdir -p changelog/entries
+          # NOTE: canonical folder is paid_post/ (singular) — do NOT create paid_posts/
 
       - name: Record Master System hash BEFORE run
         id: pre_hash
@@ -54,14 +55,41 @@ jobs:
           EOF
 
       - name: Fetch YouTube transcripts
+        id: youtube_fetch
         run: python automation/fetch_youtube_transcripts.py
         continue-on-error: true
-        # continue-on-error: YouTube may block CI runners. Pipeline still continues.
+        # YouTube may block CI runners. Pipeline continues but failure is tracked below.
+
+      - name: Alert on YouTube fetch failure
+        if: steps.youtube_fetch.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[AUTO] YouTube fetch failed — Run #${{ github.run_number }}`,
+              body: [
+                '## YouTube Transcript Fetch Failed',
+                '',
+                `- **Workflow run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`,
+                `- **Triggered at:** ${{ github.event.head_commit.timestamp || 'scheduled' }}`,
+                '',
+                '### What to check',
+                '- YouTube may be blocking the CI runner IP',
+                '- `youtube-transcript-api` version may need updating in `automation/requirements.txt`',
+                '- Check the run logs for the exact error',
+                '',
+                '### Action required',
+                'Manually fetch the transcript and add to `raw_sources/youtube_transcripts/`',
+              ].join('\n'),
+              labels: ['automation-failure', 'needs-manual-action'],
+            });
 
       - name: Run full update pipeline
         run: python automation/run_update_protocol.py
         continue-on-error: true
-        # continue-on-error: If no new raw sources, steps log 'no approved records' — expected.
+        # If no new raw sources, step logs 'no approved records' — expected behaviour.
 
       - name: Verify Master System untouched AFTER run
         run: |
@@ -99,3 +127,27 @@ jobs:
           commit_user_name: "akshat-ai-automation"
           commit_user_email: "automation@akshat-ai-system.local"
           skip_dirty_check: false
+
+      - name: Alert on overall workflow failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[AUTO] Weekly content fetch FAILED — Run #${{ github.run_number }}`,
+              body: [
+                '## Weekly Content Fetch Workflow Failed',
+                '',
+                `- **Workflow run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`,
+                '',
+                '### Steps to investigate',
+                '1. Click the workflow run link above',
+                '2. Identify which step failed (red X)',
+                '3. Check the logs for the exact error',
+                '',
+                '> This issue was auto-created by the weekly_content_fetch.yml workflow.',
+              ].join('\n'),
+              labels: ['automation-failure'],
+            });
