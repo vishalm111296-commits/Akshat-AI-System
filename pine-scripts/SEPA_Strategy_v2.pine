@@ -1,0 +1,152 @@
+//@version=6
+strategy("SEPA Strategy v2.0", overlay=true, initial_capital=100000, currency=currency.USD, default_qty_type=strategy.fixed, default_qty_value=1, max_lines_count=500, max_labels_count=500, process_orders_on_close=true, calc_on_order_fills=false, max_bars_back=500, pyramiding=0, margin_long=100, margin_short=100)
+
+useTrendTemplate = input.bool(true, "Use Trend Template Filter")
+minTrendScore = input.int(7, "Min Trend Score (0-9)", minval=0, maxval=9)
+useVCP = input.bool(true, "Use VCP Pattern Filter")
+vcpLookback = input.int(40, "VCP Lookback Period", minval=20, maxval=60)
+minVCPScore = input.int(3, "Min VCP Score", minval=0, maxval=5)
+entryOffset = input.float(0.01, "Entry Offset Above Pivot", step=0.01)
+volumeMult = input.float(1.4, "Volume Breakout Multiplier", step=0.1)
+stopLossPct = input.float(7.0, "Stop Loss %", step=0.5) / 100
+riskPerTrade = input.float(1.5, "Risk Per Trade %", step=0.5) / 100
+maxPositions = input.int(5, "Max Concurrent Positions", minval=1, maxval=20)
+useMarketTiming = input.bool(true, "Use Market Timing Filter")
+marketSymbol = input.symbol("SPX", "Market Index Symbol")
+marketMALen = input.int(200, "Market MA Length")
+useTrailing = input.bool(true, "Use Trailing Stops")
+trailMA10 = input.int(10, "Early Trailing MA bars>5")
+trailMA21 = input.int(21, "Extended Trailing MA bars>20")
+breakevenPct = input.float(10.0, "Breakeven Trigger %", step=1.0) / 100
+
+ma50 = ta.sma(close, 50)
+ma150 = ta.sma(close, 150)
+ma200 = ta.sma(close, 200)
+ma10 = ta.sma(close, trailMA10)
+ma21 = ta.sma(close, trailMA21)
+high52 = ta.highest(high, 252)
+low52 = ta.lowest(low, 252)
+volMA50 = ta.sma(volume, 50)
+marketClose = request.security(marketSymbol, timeframe.period, close[1], lookahead=barmerge.lookahead_on)
+marketMA = request.security(marketSymbol, timeframe.period, ta.sma(close, marketMALen)[1], lookahead=barmerge.lookahead_on)
+isBullMarket = marketClose > marketMA
+
+r1 = close > ma150
+r2 = close > ma200
+r3 = ma150 > ma200
+r4 = ma200 > ma200[20]
+r5 = ma50 > ma150 and ma50 > ma200
+r6 = close > ma50
+r7 = close >= low52 * 1.30
+r8 = close >= high52 * 0.75
+rsScore = (close / close[252] - 1) * 100
+rsRating = rsScore > 50 ? 95 : rsScore > 30 ? 85 : rsScore > 15 ? 75 : rsScore > 5 ? 65 : 50
+r9 = rsRating >= 70
+trendScore = (r1 ? 1 : 0) + (r2 ? 1 : 0) + (r3 ? 1 : 0) + (r4 ? 1 : 0) + (r5 ? 1 : 0) + (r6 ? 1 : 0) + (r7 ? 1 : 0) + (r8 ? 1 : 0) + (r9 ? 1 : 0)
+trendPass = trendScore >= minTrendScore
+
+phaseLen = int(vcpLookback / 3)
+p1High = ta.highest(high, phaseLen)[phaseLen * 2]
+p1Low = ta.lowest(low, phaseLen)[phaseLen * 2]
+c1Depth = p1High > 0 ? (p1High - p1Low) / p1High * 100 : 0.0
+p2High = ta.highest(high, phaseLen)[phaseLen]
+p2Low = ta.lowest(low, phaseLen)[phaseLen]
+c2Depth = p2High > 0 ? (p2High - p2Low) / p2High * 100 : 0.0
+p3High = ta.highest(high, phaseLen)[1]
+p3Low = ta.lowest(low, phaseLen)[1]
+c3Depth = p3High > 0 ? (p3High - p3Low) / p3High * 100 : 0.0
+v1 = ta.sma(volume, phaseLen)[phaseLen * 2]
+v2 = ta.sma(volume, phaseLen)[phaseLen]
+v3 = ta.sma(volume, phaseLen)[1]
+pivot = ta.highest(high, vcpLookback)[1]
+nearPivot = not na(pivot) and high >= pivot * 0.97
+near52WH = close >= high52 * 0.90
+volSurge = volume > volMA50 * volumeMult
+contractionsValid = c1Depth > c2Depth and c2Depth > c3Depth and c3Depth < 8.0
+volumeContracting = v1 > v2 and v2 > v3
+vcpScore = (contractionsValid ? 1 : 0) + (volumeContracting ? 1 : 0) + (nearPivot ? 1 : 0) + (near52WH ? 1 : 0) + (volSurge ? 1 : 0)
+vcpPass = contractionsValid and vcpScore >= minVCPScore
+
+entryPrice = pivot + entryOffset
+riskPerShare = entryPrice * stopLossPct
+riskAmount = strategy.equity * riskPerTrade
+positionSize = riskPerShare > 0 and not na(pivot) ? math.floor(riskAmount / riskPerShare) : 0
+entryTrigger = not na(pivot) and high >= entryPrice
+canEnter = true
+if useTrendTemplate and not trendPass
+    canEnter := false
+if useVCP and not vcpPass
+    canEnter := false
+if useMarketTiming and not isBullMarket
+    canEnter := false
+if strategy.opentrades >= maxPositions
+    canEnter := false
+if positionSize <= 0
+    canEnter := false
+if strategy.position_size > 0
+    canEnter := false
+longCondition = canEnter and entryTrigger
+
+if longCondition
+    strategy.entry("SEPA", strategy.long, qty=positionSize)
+
+var float entryVal = na
+var int entryBar = na
+if strategy.position_size > 0 and strategy.position_size[1] == 0
+    entryVal := strategy.position_avg_price
+    entryBar := bar_index
+if strategy.position_size == 0 and strategy.position_size[1] > 0
+    entryVal := na
+    entryBar := na
+
+hardStop = not na(entryVal) ? entryVal * (1 - stopLossPct) : na
+barsInTrade = strategy.position_size > 0 and not na(entryBar) ? bar_index - entryBar : 0
+trailStop = hardStop
+if useTrailing and strategy.position_size > 0 and not na(hardStop)
+    if barsInTrade > 20
+        trailStop := math.max(hardStop, ma21)
+    else if barsInTrade > 5
+        trailStop := math.max(hardStop, ma10)
+    if not na(entryVal) and close >= entryVal * (1 + breakevenPct)
+        trailStop := math.max(trailStop, entryVal)
+if strategy.position_size > 0 and not na(trailStop)
+    strategy.cancel("Stop")
+    strategy.exit("Stop", "SEPA", stop=trailStop, comment_loss="Stop Hit")
+
+plot(ma50, "MA50", color=color.new(color.orange, 0), linewidth=1)
+plot(ma150, "MA150", color=color.new(color.blue, 0), linewidth=1)
+plot(ma200, "MA200", color=color.new(color.red, 0), linewidth=2)
+plot(high52, "52W High", color=color.new(color.green, 80), linewidth=1)
+plot(low52, "52W Low", color=color.new(color.maroon, 80), linewidth=1)
+plot(not na(pivot) ? pivot : na, "Pivot", color=color.new(color.purple, 0), style=plot.style_cross, linewidth=2)
+bgcolor(vcpPass ? color.new(color.yellow, 90) : na, title="VCP Zone")
+bgcolor(useMarketTiming and not isBullMarket ? color.new(color.maroon, 90) : na, title="Bear Market Warning")
+plotshape(longCondition, title="SEPA Buy", location=location.belowbar, color=color.green, style=shape.labelup, text="BUY", textcolor=color.white, size=size.small)
+plot(strategy.position_size > 0 and not na(trailStop) ? trailStop : na, "Trailing Stop", color=color.new(color.red, 0), style=plot.style_linebr, linewidth=2)
+
+var table trendTable = table.new(position.top_right, 2, 5, bgcolor=color.black, frame_color=color.gray, frame_width=1)
+if barstate.islast
+    table.cell(trendTable, 0, 0, "TREND TEMPLATE", text_color=color.white, text_size=size.small)
+    table.cell(trendTable, 1, 0, str.tostring(trendScore) + "/9", text_color=trendPass ? color.green : color.red, text_size=size.small)
+    table.cell(trendTable, 0, 1, "R1 >MA150", text_color=r1 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 1, 1, "R2 >MA200", text_color=r2 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 0, 2, "R3 MA150>200", text_color=r3 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 1, 2, "R4 MA200 Up", text_color=r4 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 0, 3, "R5 MA50>150", text_color=r5 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 1, 3, "R6 >MA50", text_color=r6 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 0, 4, "R7-R9", text_color=r7 and r8 and r9 ? color.green : color.red, text_size=size.tiny)
+    table.cell(trendTable, 1, 4, "VCP " + str.tostring(vcpScore) + "/5", text_color=vcpPass ? color.green : color.red, text_size=size.tiny)
+
+var table vcpTable = table.new(position.bottom_right, 2, 4, bgcolor=color.black, frame_color=color.gray, frame_width=1)
+if barstate.islast
+    table.cell(vcpTable, 0, 0, "VCP CONTRACTIONS", text_color=color.white, text_size=size.small)
+    table.cell(vcpTable, 1, 0, "DEPTH PCT", text_color=color.white, text_size=size.small)
+    table.cell(vcpTable, 0, 1, "C1 Wide", text_color=color.orange, text_size=size.tiny)
+    table.cell(vcpTable, 1, 1, str.tostring(c1Depth, "#.#"), text_color=color.orange, text_size=size.tiny)
+    table.cell(vcpTable, 0, 2, "C2 Tight", text_color=color.yellow, text_size=size.tiny)
+    table.cell(vcpTable, 1, 2, str.tostring(c2Depth, "#.#"), text_color=color.yellow, text_size=size.tiny)
+    table.cell(vcpTable, 0, 3, "C3 Tightest", text_color=color.green, text_size=size.tiny)
+    table.cell(vcpTable, 1, 3, str.tostring(c3Depth, "#.#") + (contractionsValid ? " OK" : " NO"), text_color=contractionsValid ? color.green : color.red, text_size=size.tiny)
+
+alertcondition(longCondition, title="SEPA Buy Signal", message="SEPA BUY: {{ticker}} | Price: {{close}} | Time: {{time}}")
+alertcondition(strategy.position_size > 0 and not na(trailStop) and close < trailStop, title="SEPA Stop Hit", message="SEPA STOP HIT: {{ticker}} | Price: {{close}} | Time: {{time}}")
